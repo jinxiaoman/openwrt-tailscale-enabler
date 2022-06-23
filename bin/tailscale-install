@@ -23,6 +23,7 @@ rm -f "/usr/bin/tailscale-install"
 ln -s "$install_path/tailscale-install" "/usr/bin/tailscale-install"
 
 ## Install service
+/etc/init.d/tailscale stop || true
 service_file="$repo_base/etc/init.d/tailscale"
 wget -O- "$service_file" > /etc/init.d/tailscale
 
@@ -57,6 +58,8 @@ rm -rf $tmp_path/tailscale_${version}*
 rm -f "/usr/bin/tailscaled" "/usr/bin/tailscale" 
 ln -s "$install_path/tailscaled" "/usr/bin/tailscaled" 
 ln -s "$install_path/tailscale" "/usr/bin/tailscale" 
+
+/etc/init.d/tailscale reload 
 
 echo "Done!"
 
