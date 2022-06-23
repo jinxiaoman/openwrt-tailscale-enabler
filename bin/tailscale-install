@@ -1,10 +1,9 @@
 #!/bin/sh
-
 set -e
 
 # install path
-install_path="/mnt/sda1/tailscale"
-tmp_path="$install_path/tmp"
+: "${install_path:="/tmp"}"
+: "${tmp_path:="$install_path/tmp"}"
 
 if [ ! -f $install_path ]; then
     mkdir -p "$install_path"
@@ -13,12 +12,16 @@ fi
 
 echo "Installing to: $install_path"
 
-# install self
+# Insatall updater (self)
 SCRIPT=$(readlink -f "$0")
 cp "$SCRIPT" "$install_path/tailscale-update"
-ln -s "/usr/bin/tailscale-update" "$install_path/tailscale-update"
+ln -s "$install_path/tailscale-update" "/usr/bin/tailscale-update" 
 
+## Install service
+service_file="https://raw.githubusercontent.com/lanrat/openwrt-tailscale-enabler/main/etc/init.d/tailscale"
+wget -O- "$service_file" > /etc/init.d/tailscale
 
+## Install Tailscale
 arch=`uname -m`
 if [ "$arch" == "mips" ]; then
     endianness=`echo -n I | hexdump -o | awk '{ print (substr($2,6,1)=="1") ? "le" : ""; exit }'`
@@ -42,13 +45,13 @@ echo -e "tailscale_${version}/tailscaled" >> $file_list
 
 wget -O- "https://pkgs.tailscale.com/stable/tailscale_${version}.tgz" | tar x -zvf - -C "$tmp_path" -T "$file_list"
 
-mv $tmp_path/tailscale_$version/* $install_path
-#TODO
-#rm -rf $tmp_path/tailscale_${version}*
+mv $tmp_path/tailscale_$version/* "$install_path"
+rm -rf $tmp_path/tailscale_${version}*
 
-# TODO check if exists or file?
-ln -s "/usr/bin/tailscaled" "$install_path/tailscaled"
-ln -s "/usr/bin/tailscale" "$install_path/tailscale"
+# create links in $PATH
+rm -f "/usr/bin/tailscaled" "/usr/bin/tailscale" 
+ln -s "$install_path/tailscaled" "/usr/bin/tailscaled" 
+ln -s "$install_path/tailscale" "/usr/bin/tailscale" 
 
 echo "Done!"
 
