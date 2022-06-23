@@ -1,0 +1,55 @@
+#!/bin/sh
+
+set -e
+
+# install path
+install_path="/mnt/sda1/tailscale"
+tmp_path="$install_path/tmp"
+
+if [ ! -f $install_path ]; then
+    mkdir -p "$install_path"
+    mkdir -p "$tmp_path"
+fi
+
+echo "Installing to: $install_path"
+
+# install self
+SCRIPT=$(readlink -f "$0")
+cp "$SCRIPT" "$install_path/tailscale-update"
+ln -s "/usr/bin/tailscale-update" "$install_path/tailscale-update"
+
+
+arch=`uname -m`
+if [ "$arch" == "mips" ]; then
+    endianness=`echo -n I | hexdump -o | awk '{ print (substr($2,6,1)=="1") ? "le" : ""; exit }'`
+elif [ "$arch" == "armv7l" ]; then
+    arch=arm
+elif [ "$arch" == "aarch64" ]; then
+    arch=arm64
+elif [ "$arch" == "x86_64" ]; then
+    arch=amd64
+fi
+
+latest_version=`wget -O- "https://pkgs.tailscale.com/stable/" | grep tailscale_ | head -1 | cut -d'_' -f 2`
+version="${latest_version}_${arch}${endianness}"
+
+echo "Downloading Tailscale ${version} .."
+
+file_list="$tmp_path/tailscale_${version}_files.txt"
+
+echo -e "tailscale_${version}/tailscale" > $file_list
+echo -e "tailscale_${version}/tailscaled" >> $file_list
+
+wget -O- "https://pkgs.tailscale.com/stable/tailscale_${version}.tgz" | tar x -zvf - -C "$tmp_path" -T "$file_list"
+
+mv $tmp_path/tailscale_$version/* $install_path
+#TODO
+#rm -rf $tmp_path/tailscale_${version}*
+
+# TODO check if exists or file?
+ln -s "/usr/bin/tailscaled" "$install_path/tailscaled"
+ln -s "/usr/bin/tailscale" "$install_path/tailscale"
+
+echo "Done!"
+
+tailscale version
