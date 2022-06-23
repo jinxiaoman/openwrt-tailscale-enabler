@@ -5,6 +5,9 @@ set -e
 : "${install_path:="/tmp"}"
 : "${tmp_path:="$install_path/tmp"}"
 
+
+repo_base="https://raw.githubusercontent.com/lanrat/openwrt-tailscale-enabler/main"
+
 if [ ! -f $install_path ]; then
     mkdir -p "$install_path"
     mkdir -p "$tmp_path"
@@ -13,12 +16,12 @@ fi
 echo "Installing to: $install_path"
 
 # Insatall updater (self)
-SCRIPT=$(readlink -f "$0")
-cp "$SCRIPT" "$install_path/tailscale-update"
-ln -s "$install_path/tailscale-update" "/usr/bin/tailscale-update" 
+update_file="$repo_base/bin/tailscale-install"
+wget -O- "$update_file" > "$install_path/tailscale-install"
+ln -s "$install_path/tailscale-install" "/usr/bin/tailscale-install"
 
 ## Install service
-service_file="https://raw.githubusercontent.com/lanrat/openwrt-tailscale-enabler/main/etc/init.d/tailscale"
+service_file="$repo_base/etc/init.d/tailscale"
 wget -O- "$service_file" > /etc/init.d/tailscale
 
 ## Install Tailscale
