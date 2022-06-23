@@ -18,6 +18,8 @@ echo "Installing to: $install_path"
 # Insatall updater (self)
 update_file="$repo_base/bin/tailscale-install"
 wget -O- "$update_file" > "$install_path/tailscale-install"
+chmod +x "$install_path/tailscale-install"
+rm -f "/usr/bin/tailscale-install"
 ln -s "$install_path/tailscale-install" "/usr/bin/tailscale-install"
 
 ## Install service
