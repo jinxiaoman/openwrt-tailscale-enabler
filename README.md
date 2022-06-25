@@ -10,7 +10,7 @@ opkg install libustream-openssl ca-bundle kmod-tun
 
 
 2. Install the service and download the latest Tailscale binaries.
-set `install_path` if you want to have a persistant install, otehrwise defaults to `/tmp`.
+set `install_path` if you want to have a persistant install, otherwise defaults to `/tmp`.
 
 ```sh
 export install_path="/mnt/sda1/tailscale"
