@@ -26,6 +26,7 @@ ln -s "$install_path/tailscale-install" "/usr/bin/tailscale-install"
 /etc/init.d/tailscale stop || true
 service_file="$repo_base/etc/init.d/tailscale"
 wget -O- "$service_file" > /etc/init.d/tailscale
+chmod +x /etc/init.d/tailscale
 
 ## Install Tailscale
 arch=`uname -m`
