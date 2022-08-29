@@ -63,7 +63,6 @@ ln -s "$install_path/tailscale" "/usr/bin/tailscale"
 
 
 echo "Starting Service"
-chmod +x /etc/init.d/tailscale
 /etc/init.d/tailscale reload 
 
 echo "Done!"
