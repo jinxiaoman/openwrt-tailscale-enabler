@@ -38,6 +38,6 @@ ls /etc/rc.d/S*tailscale*
 
 5. Reboot the router and verify that it shows up online on the [Tailscale Admin portal](https://login.tailscale.com/admin/machines).
 
-6. To update the version of tailscale, run `tailscale-update` or run step 2 again.
+6. To update the version of tailscale, run `tailscale-install` or run step 2 again.
 
-Note: You need to have atleast 11+16 = ~27 MB of free space in `$install_path` to be able to use this.
+Note: You need to have at least ~27 MB of free space in `$install_path` to be able to use this.
