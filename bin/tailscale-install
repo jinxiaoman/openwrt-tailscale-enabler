@@ -54,11 +54,15 @@ wget -O- "https://pkgs.tailscale.com/stable/tailscale_${version}.tgz" | tar x -z
 mv $tmp_path/tailscale_$version/* "$install_path"
 rm -rf $tmp_path/tailscale_${version}*
 
+echo "Creating links"
 # create links in $PATH
 rm -f "/usr/bin/tailscaled" "/usr/bin/tailscale" 
 ln -s "$install_path/tailscaled" "/usr/bin/tailscaled" 
 ln -s "$install_path/tailscale" "/usr/bin/tailscale" 
 
+
+echo "Starting Service"
+chmod +x /etc/init.d/tailscale
 /etc/init.d/tailscale reload 
 
 echo "Done!"
