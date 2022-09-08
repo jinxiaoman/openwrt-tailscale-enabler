@@ -41,3 +41,12 @@ ls /etc/rc.d/S*tailscale*
 6. To update the version of tailscale, run `tailscale-install` or run step 2 again.
 
 Note: You need to have at least ~27 MB of free space in `$install_path` to be able to use this.
+
+
+## Uninstallation
+
+```shell
+/etc/init.d/tailscale stop
+/etc/init.d/tailscale disable
+rm -rf /usr/bin/tailscale /usr/bin/tailscaled /etc/init.d/tailscale /usr/bin/tailscale-install /etc/config/tailscale.state
+```
