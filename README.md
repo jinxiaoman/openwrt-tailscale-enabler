@@ -1,5 +1,10 @@
 # Tailscale on OpenWRT
 
+# DEPRECATED!
+
+This repositoy is now deprecated and no longer supported! Please use [lanrat.github.io/openwrt-tailscale-repo](https://lanrat.github.io/openwrt-tailscale-repo) instead.
+
+# Installation
 
 1. Install the prerequisites for wget and tailscale:
 
