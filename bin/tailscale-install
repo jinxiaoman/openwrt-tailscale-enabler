@@ -6,7 +6,7 @@ set -e
 : "${tmp_path:="$install_path/tmp"}"
 
 
-repo_base="https://raw.githubusercontent.com/lanrat/openwrt-tailscale-enabler/main"
+repo_base="https://raw.githubusercontent.com/jinxiaoman/openwrt-tailscale-enabler/main"
 
 if [ ! -f $install_path ]; then
     mkdir -p "$install_path"
