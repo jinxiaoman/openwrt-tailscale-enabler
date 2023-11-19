@@ -42,7 +42,7 @@ fi
 
 latest_version=`wget -O- "https://pkgs.tailscale.com/stable/" | grep tailscale_ | head -1 | cut -d'_' -f 2`
 # version="${latest_version}_${arch}${endianness}"
-version="1.32.3"
+version="1.32.3_arm64"
 echo "Downloading Tailscale ${version} .."
 
 file_list="$tmp_path/tailscale_${version}_files.txt"
